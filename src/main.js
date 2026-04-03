@@ -123,7 +123,7 @@ connectButton.addEventListener("click", async () => {
 
     const resolvedSessionAddress = getSessionAddress();
     accountLabel.textContent = `Wallet: ${connectedAddress}`;
-    sessionLabel.textContent = `Session account: ${resolvedSessionAddress}`;
+    sessionLabel.textContent = `Delegate Account: ${resolvedSessionAddress}`;
     setStatus("Wallet connected. Ready to request permissions.");
   } catch (error) {
     setStatus(error.message);
