@@ -82,3 +82,32 @@ button:hover {
   min-height: 220px;
   resize: vertical;
 }
+
+.brand-footer {
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  color: #b6c3ff;
+  opacity: 0.95;
+}
+
+.brand-logo {
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #2a3459;
+}
+
+.brand-footer p {
+  margin: 0;
+}
+
+.brand-footer a {
+  color: #7fa2ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.brand-footer a:hover {
+  text-decoration: underline;
+}
