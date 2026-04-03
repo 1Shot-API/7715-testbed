@@ -62,11 +62,21 @@
 
       <section class="panel">
         <div class="json-header">
-          <h2>Permission Context JSON</h2>
-          <button id="copyButton">Copy JSON</button>
+          <h2>Decoded Permission Context JSON</h2>
+          <button id="copyDecodedButton">Copy Decoded JSON</button>
         </div>
-        <textarea id="jsonOutput" readonly>
-No permission context yet.
+        <textarea id="decodedJsonOutput" readonly>
+No decoded permission context yet.
+        </textarea>
+      </section>
+
+      <section class="panel">
+        <div class="json-header">
+          <h2>Raw Permission Context</h2>
+          <button id="copyRawButton">Copy Raw Context</button>
+        </div>
+        <textarea id="rawContextOutput" readonly>
+No raw permission context yet.
         </textarea>
       </section>
     </main>

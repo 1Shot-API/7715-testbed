@@ -77,7 +77,8 @@ button:hover {
   gap: 1rem;
 }
 
-#jsonOutput {
+#decodedJsonOutput,
+#rawContextOutput {
   min-height: 220px;
   resize: vertical;
 }
