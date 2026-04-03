@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ERC-7715 Permission Demo</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <h1>ERC-7715 Permission Demo</h1>
+      <p>
+        Connect MetaMask, then request either an ERC-20 or native token spending
+        permission. The returned permission context JSON is shown below.
+      </p>
+
+      <section class="panel">
+        <h2>Connection</h2>
+        <button id="connectButton">Connect Wallet</button>
+        <p id="accountLabel">Wallet: Not connected</p>
+        <p id="sessionLabel">Session account: Not created</p>
+      </section>
+
+      <section class="panel">
+        <h2>Request Config</h2>
+        <label>
+          Chain ID
+          <input id="chainIdInput" type="number" value="11155111" min="1" />
+        </label>
+        <label>
+          Session Account Address (optional)
+          <input
+            id="sessionAddressInput"
+            type="text"
+            placeholder="Leave blank to auto-generate"
+          />
+        </label>
+        <label>
+          ERC-20 Token Address
+          <input
+            id="tokenAddressInput"
+            type="text"
+            value="0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238"
+          />
+        </label>
+        <label>
+          ERC-20 Decimals
+          <input id="tokenDecimalsInput" type="number" value="6" min="0" />
+        </label>
+      </section>
+
+      <section class="panel actions">
+        <h2>Permission Requests</h2>
+        <button id="erc20Button">Request Small ERC-20 Permission</button>
+        <button id="nativeButton">Request Small Native Permission</button>
+      </section>
+
+      <section class="panel">
+        <h2>Status</h2>
+        <p id="statusText">Ready.</p>
+      </section>
+
+      <section class="panel">
+        <div class="json-header">
+          <h2>Permission Context JSON</h2>
+          <button id="copyButton">Copy JSON</button>
+        </div>
+        <textarea id="jsonOutput" readonly>
+No permission context yet.
+        </textarea>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

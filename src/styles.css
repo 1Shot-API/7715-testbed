@@ -1,0 +1,83 @@
+:root {
+  color-scheme: dark;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0b1020;
+  color: #e7ecff;
+}
+
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+h1,
+h2 {
+  margin-top: 0;
+}
+
+.panel {
+  background: #151b2f;
+  border: 1px solid #2a3459;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 0.4rem;
+  background: #0d1326;
+  color: #e7ecff;
+  border: 1px solid #2a3459;
+  border-radius: 8px;
+  padding: 0.6rem 0.7rem;
+}
+
+button {
+  background: #4565ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #5f7bff;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.json-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+#jsonOutput {
+  min-height: 220px;
+  resize: vertical;
+}
