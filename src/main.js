@@ -1,7 +1,9 @@
 import { createWalletClient, custom, parseEther, parseUnits } from "viem";
-import { privateKeyToAccount, generatePrivateKey } from "viem/accounts";
 import { erc7715ProviderActions } from "@metamask/smart-accounts-kit/actions";
 import { decodeDelegations } from "@metamask/smart-accounts-kit/utils";
+
+const RELAYER_URL = "https://relayer.1shotapi.com/relayers";
+const SUPPORTED_CHAIN_IDS = ["8453", "1"];
 
 const connectButton = document.getElementById("connectButton");
 const erc20Button = document.getElementById("erc20Button");
@@ -14,14 +16,14 @@ const statusText = document.getElementById("statusText");
 const decodedJsonOutput = document.getElementById("decodedJsonOutput");
 const rawContextOutput = document.getElementById("rawContextOutput");
 
-const chainIdInput = document.getElementById("chainIdInput");
+const chainIdSelect = document.getElementById("chainIdSelect");
 const sessionAddressInput = document.getElementById("sessionAddressInput");
 const tokenAddressInput = document.getElementById("tokenAddressInput");
 const tokenDecimalsInput = document.getElementById("tokenDecimalsInput");
 
 let walletClient = null;
 let connectedAddress = null;
-let sessionAddress = null;
+let relayerCapabilities = null;
 
 function setStatus(message) {
   statusText.textContent = message;
@@ -35,17 +37,17 @@ function setRawContextOutput(value) {
   rawContextOutput.value = value;
 }
 
+function jsonReplacer(_, item) {
+  return typeof item === "bigint" ? item.toString() : item;
+}
+
 function safeJsonStringify(value) {
-  return JSON.stringify(
-    value,
-    (_, item) => (typeof item === "bigint" ? item.toString() : item),
-    2
-  );
+  return JSON.stringify(value, jsonReplacer, 2);
 }
 
 function ensureMetaMask() {
   if (!window.ethereum) {
-    throw new Error("MetaMask was not found. Please install MetaMask Flask.");
+    throw new Error("MetaMask was not found. Please install MetaMask.");
   }
 }
 
@@ -55,24 +57,66 @@ function ensureWalletConnected() {
   }
 }
 
+async function relayerRpc(method, params) {
+  const response = await fetch(RELAYER_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Relayer request failed (${response.status}).`);
+  }
+
+  const payload = await response.json();
+  if (payload.error) {
+    throw new Error(payload.error.message ?? "Relayer request failed.");
+  }
+
+  return payload.result;
+}
+
+async function loadRelayerCapabilities() {
+  relayerCapabilities = await relayerRpc("relayer_getCapabilities", [
+    ...SUPPORTED_CHAIN_IDS,
+  ]);
+  applyChainConfig(chainIdSelect.value);
+}
+
+function applyChainConfig(chainId) {
+  const chainConfig = relayerCapabilities?.[chainId];
+  if (!chainConfig) {
+    throw new Error(`Relayer does not support chain ${chainId}.`);
+  }
+
+  sessionAddressInput.value = chainConfig.targetAddress;
+
+  const usdc = chainConfig.tokens.find((token) => token.symbol === "USDC");
+  if (!usdc) {
+    throw new Error(`USDC is not available on chain ${chainId}.`);
+  }
+
+  tokenAddressInput.value = usdc.address;
+  tokenDecimalsInput.value = usdc.decimals;
+
+  if (connectedAddress) {
+    sessionLabel.textContent = `Delegate Account: ${chainConfig.targetAddress}`;
+  }
+}
+
 function getSessionAddress() {
-  const userEnteredAddress = sessionAddressInput.value.trim();
-  if (userEnteredAddress) {
-    return userEnteredAddress;
+  const targetAddress = sessionAddressInput.value.trim();
+  if (!targetAddress) {
+    throw new Error("Delegate account address is not loaded yet.");
   }
 
-  if (!sessionAddress) {
-    const account = privateKeyToAccount(generatePrivateKey());
-    sessionAddress = account.address;
-  }
-
-  return sessionAddress;
+  return targetAddress;
 }
 
 function getPermissionEnvelope(permission) {
   const currentTime = Math.floor(Date.now() / 1000);
   const expiry = currentTime + 3600;
-  const chainId = Number(chainIdInput.value);
+  const chainId = Number(chainIdSelect.value);
   const to = getSessionAddress();
 
   if (!Number.isInteger(chainId) || chainId < 1) {
@@ -193,4 +237,17 @@ copyRawButton.addEventListener("click", async () => {
   } catch {
     setStatus("Could not copy raw context automatically. Copy manually.");
   }
+});
+
+chainIdSelect.addEventListener("change", () => {
+  try {
+    applyChainConfig(chainIdSelect.value);
+    setStatus(`Switched to chain ${chainIdSelect.value}. Config updated from relayer.`);
+  } catch (error) {
+    setStatus(error.message);
+  }
+});
+
+loadRelayerCapabilities().catch((error) => {
+  setStatus(`Failed to load relayer config: ${error.message}`);
 });

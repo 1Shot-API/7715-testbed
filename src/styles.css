@@ -34,12 +34,14 @@ label {
 }
 
 input,
+select,
 textarea,
 button {
   font: inherit;
 }
 
 input,
+select,
 textarea {
   box-sizing: border-box;
   width: 100%;

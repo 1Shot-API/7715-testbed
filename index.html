@@ -11,15 +11,7 @@
       <h1>ERC-7715 Permission Demo</h1>
       <p>
         Connect MetaMask, then request either an ERC-20 or native token spending
-        permission. The returned permission context JSON is shown below. You must
-        have
-        <a
-          href="https://chromewebstore.google.com/detail/metamask-flask-developmen/ljfoeinjpaedjfecbmggjgodbgkmjkjk"
-          target="_blank"
-          rel="noopener noreferrer"
-          >MetaMask Flask</a
-        >
-        installed to use 7715 permissions.
+        permission. The returned permission context JSON is shown below.
       </p>
 
       <section class="panel">
@@ -32,15 +24,19 @@
       <section class="panel">
         <h2>Request Config</h2>
         <label>
-          Chain ID
-          <input id="chainIdInput" type="number" value="11155111" min="1" />
+          Chain
+          <select id="chainIdSelect">
+            <option value="8453">Base (8453)</option>
+            <option value="1">Ethereum (1)</option>
+          </select>
         </label>
         <label>
-          Delegate Account Address (optional)
+          Delegate Account Address
           <input
             id="sessionAddressInput"
             type="text"
-            placeholder="Leave blank to auto-generate"
+            readonly
+            placeholder="Loading from relayer…"
           />
         </label>
         <label>
@@ -48,7 +44,8 @@
           <input
             id="tokenAddressInput"
             type="text"
-            value="0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238"
+            readonly
+            placeholder="Loading from relayer…"
           />
         </label>
         <label>
