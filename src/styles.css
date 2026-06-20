@@ -80,7 +80,8 @@ button:hover {
 }
 
 #decodedJsonOutput,
-#rawContextOutput {
+#rawContextOutput,
+#relayerCurlOutput {
   min-height: 220px;
   resize: vertical;
 }

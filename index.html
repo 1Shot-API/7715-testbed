@@ -52,6 +52,14 @@
           ERC-20 Decimals
           <input id="tokenDecimalsInput" type="number" value="6" min="0" />
         </label>
+        <label>
+          Transfer Destination Address
+          <input
+            id="transferDestinationInput"
+            type="text"
+            placeholder="0x… recipient for the ERC-20 transfer"
+          />
+        </label>
       </section>
 
       <section class="panel actions">
@@ -82,6 +90,16 @@ No decoded permission context yet.
         </div>
         <textarea id="rawContextOutput" readonly>
 No raw permission context yet.
+        </textarea>
+      </section>
+
+      <section class="panel">
+        <div class="json-header">
+          <h2>Relayer ERC-20 Transfer Curl</h2>
+          <button id="copyRelayerCurlButton">Copy Curl Command</button>
+        </div>
+        <textarea id="relayerCurlOutput" readonly>
+Request an ERC-20 permission and enter a transfer destination to generate the relayer curl command.
         </textarea>
       </section>
 
